@@ -216,7 +216,8 @@ STATIC int psmx2_cntr_wait(struct fid_cntr *cntr, uint64_t threshold, int timeou
 
 	cntr_priv = container_of(cntr, struct psmx2_fid_cntr, cntr);
 
-	clock_gettime(CLOCK_REALTIME, &ts0);
+	if (timeout < 0)
+		clock_gettime(CLOCK_REALTIME, &ts0);
 
 	while (ofi_atomic_get64(&cntr_priv->counter) < threshold) {
 		if (cntr_priv->error_avail) {
